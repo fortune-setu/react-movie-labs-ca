@@ -17,7 +17,7 @@ const formControl =
   {
     margin: 1,
     minWidth: "90%",
-    backgroundColor: "rgb(255, 255, 255)"
+    backgroundColor: "#161B22", // dark text background to suit the dark theme
   };
 
 export default function FilterMoviesCard(props) {
