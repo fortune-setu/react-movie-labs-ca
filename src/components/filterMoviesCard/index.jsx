@@ -13,12 +13,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import img from '../../images/pexels-dziana-hasanbekava-5480827.jpg'
 
-const formControl = 
-  {
-    margin: 1,
-    minWidth: "90%",
-    backgroundColor: "#161B22", // dark text background to suit the dark theme
-  };
+const formControl =
+{
+  margin: 1,
+  minWidth: "90%",
+  backgroundColor: "#161B22", // dark text background to suit the dark theme
+};
 
 export default function FilterMoviesCard(props) {
 
@@ -35,13 +35,13 @@ export default function FilterMoviesCard(props) {
     return <h1>{error.message}</h1>;
   }
   const genres = data.genres;
-  if (genres[0].name !== "All"){
+  if (genres[0].name !== "All") {
     genres.unshift({ id: "0", name: "All" });
   }
 
   const handleChange = (e, type, value) => {
     e.preventDefault();
-    props.onUserInput(type, value); 
+    props.onUserInput(type, value);
   };
 
   const handleTextChange = (e, props) => {
@@ -52,11 +52,16 @@ export default function FilterMoviesCard(props) {
     handleChange(e, "genre", e.target.value);
   };
 
+  // tells the template which sort option was chosen (rating/newest/title)
+  const handleSortChange = (e) => {
+    handleChange(e, "sort", e.target.value);
+  };
+
   return (
-    <Card 
+    <Card
       sx={{
         backgroundColor: "rgb(204, 204, 0)"
-      }} 
+      }}
       variant="outlined">
       <CardContent>
         <Typography variant="h5" component="h1">
@@ -64,7 +69,7 @@ export default function FilterMoviesCard(props) {
           Filter the movies.
         </Typography>
         <TextField
-          sx={{...formControl}}
+          sx={{ ...formControl }}
           id="filled-search"
           label="Search field"
           type="search"
@@ -72,7 +77,7 @@ export default function FilterMoviesCard(props) {
           value={props.titleFilter}
           onChange={handleTextChange}
         />
-        <FormControl sx={{...formControl}}>
+        <FormControl sx={{ ...formControl }}>
           <InputLabel id="genre-label">Genre</InputLabel>
           <Select
             labelId="genre-label"
@@ -88,6 +93,22 @@ export default function FilterMoviesCard(props) {
                 </MenuItem>
               );
             })}
+          </Select>
+        </FormControl>
+        {// Sort dropdown allows the sorting itself happens in templateMovieListPage 
+        }
+        <FormControl sx={{ ...formControl }}>
+          <InputLabel id="sort-label">Sort by</InputLabel>
+          <Select
+            labelId="sort-label"
+            id="sort-select"
+            value={props.sortFilter}
+            onChange={handleSortChange}
+          >
+            <MenuItem value="none">Default</MenuItem>
+            <MenuItem value="rating">Highest rated</MenuItem>
+            <MenuItem value="newest">Newest first</MenuItem>
+            <MenuItem value="title">Title A-Z</MenuItem>
           </Select>
         </FormControl>
       </CardContent>
