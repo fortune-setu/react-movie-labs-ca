@@ -37,6 +37,11 @@ const MoviesContextProvider = (props) => {
   };
   // console.log(playlist);
 
+  // keeps every id in the watchlist except the one being removed
+  const removeFromPlaylist = (movie) => {
+    setPlaylist(playlist.filter((mId) => mId !== movie.id));
+  };
+
   return (
     <MoviesContext.Provider
       value={{
