@@ -1,7 +1,12 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Navigate, Routes } from "react-router";
 import HomePage from "./pages/homePage";
+import PopularPage from "./pages/popularPage";
+import TopRatedPage from "./pages/topRatedPage";
+import NowPlayingPage from "./pages/nowPlayingPage";
 import UpcomingPage from "./pages/upcomingPage";
+import WatchlistPage from "./pages/watchlistPage";
+import ActorDetailsPage from "./pages/actorDetailsPage";
 import MoviePage from "./pages/movieDetailsPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
 import MovieReviewPage from "./pages/movieReviewPage";
@@ -23,6 +28,8 @@ const theme = createTheme({
   },
 });
 
+/*staleTime is how long in milliseconds cached data counts as fresh. While fresh, react-query returns it 
+from the cache instead of calling the API again. This is the caching used by every endpoint in the app. */
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -33,20 +40,28 @@ const queryClient = new QueryClient({
   },
 });
 
-// ThemeProvider gives every MUI component the blue and black colour while CssBaseline applies the theme's black background to the whole page
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      {/* ThemeProvider gives every MUI component our blue/black colours.
+          CssBaseline applies the theme's black background to the whole page. */}
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <BrowserRouter> 
+        <BrowserRouter>
           <SiteHeader />
           <MoviesContextProvider>
+            {/* the order matters qs fixed paths like /movies/popular must come before
+                /movies/:id, otherwise "popular" would be read as a movie id. */}
             <Routes>
               <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+              <Route path="/movies/watchlist" element={<WatchlistPage />} />
               <Route path="/movies/upcoming" element={<UpcomingPage />} />
+              <Route path="/movies/popular" element={<PopularPage />} />
+              <Route path="/movies/top-rated" element={<TopRatedPage />} />
+              <Route path="/movies/now-playing" element={<NowPlayingPage />} />
+              <Route path="/person/:id" element={<ActorDetailsPage />} />
               <Route path="/reviews/:id" element={<MovieReviewPage />} />
-              <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+              <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
               <Route path="/movies/:id" element={<MoviePage />} />
               <Route path="/" element={<HomePage />} />
               <Route path="*" element={<Navigate to="/" />} />
