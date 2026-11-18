@@ -31,7 +31,8 @@ export default function MovieCard({ movie, action }) {
   };
   
   return (
-    <Card>
+    // sx adds a blue glow when the mouse is over the card
+<Card sx={{ "&:hover": { boxShadow: "0 0 12px #087BFA" } }}>
       <CardHeader
         avatar={
           movie.favorite ? (
