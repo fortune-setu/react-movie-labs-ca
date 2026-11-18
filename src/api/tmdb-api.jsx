@@ -124,3 +124,40 @@ export const getMovieReviews = ({ queryKey }) => {
   });
 };
 
+// these are parameterised endpoints which need an id to work
+
+// cast and crew of one movie
+export const getMovieCredits = ({ queryKey }) => {
+  const [, idPart] = queryKey;
+  const { id } = idPart;
+  return fetch(
+    `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  ).then(handleResponse);
+};
+
+// movies TMDB suggests for people who liked this movie
+export const getMovieRecommendations = ({ queryKey }) => {
+  const [, idPart] = queryKey;
+  const { id } = idPart;
+  return fetch(
+    `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  ).then(handleResponse);
+};
+
+// the details about one actor (name / biography / birthday / photo)
+export const getPerson = ({ queryKey }) => {
+  const [, idPart] = queryKey;
+  const { id } = idPart;
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
+  ).then(handleResponse);
+};
+
+// every movie an actor has appeared in
+export const getPersonMovieCredits = ({ queryKey }) => {
+  const [, idPart] = queryKey;
+  const { id } = idPart;
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
+  ).then(handleResponse);
+};
