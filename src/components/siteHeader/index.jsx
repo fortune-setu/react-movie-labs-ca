@@ -11,7 +11,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import EventIcon from "@mui/icons-material/Event";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import Menu from "@mui/material/Menu";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
+import StarIcon from "@mui/icons-material/Star";
+import MovieIcon from "@mui/icons-material/Movie";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -23,14 +26,20 @@ const SiteHeader = () => {
   const open = Boolean(anchorEl);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  // 7 nav items need more room, so the hamburger menu is used below the "lg" size
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
   const navigate = useNavigate();
+  // useLocation tells us the current URL path, used to highlight the active link
+  const { pathname } = useLocation();
 
   const menuOptions = [
     { label: "Home", path: "/", icon: <HomeIcon /> },
-    { label: "Favorites", path: "/movies/favorites", icon: <FavoriteIcon /> },
+    { label: "Popular", path: "/movies/popular", icon: <WhatshotIcon /> },
+    { label: "Top Rated", path: "/movies/top-rated", icon: <StarIcon /> },
+    { label: "Now Playing", path: "/movies/now-playing", icon: <MovieIcon /> },
     { label: "Upcoming", path: "/movies/upcoming", icon: <EventIcon /> },
+    { label: "Favorites", path: "/movies/favorites", icon: <FavoriteIcon /> },
     { label: "Watchlist", path: "/movies/watchlist", icon: <PlaylistAddCheckIcon /> },
   ];
 
@@ -74,10 +83,8 @@ const SiteHeader = () => {
                 onClose={() => setAnchorEl(null)}
               >
                 {menuOptions.map((opt) => (
-                  <MenuItem
-                    key={opt.label}
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
+                  < MenuItem key={opt.label} onClick={() => handleMenuSelect(opt.path)} sx={{ gap: 1 }}>
+                    {opt.icon}
                     {opt.label}
                   </MenuItem>
                 ))}
@@ -95,9 +102,12 @@ const SiteHeader = () => {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    minWidth: "75px",
-                    textTransform: "none",
+                    minWidth: "64px",
+                    // textTransform: "none",
                     gap: 0.5,
+                    borderBottom:
+                      pathname === opt.path ? "3px solid white" : "3px solid transparent",
+                    borderRadius: 0,
                   }}
                 >
                   {opt.icon}
@@ -115,7 +125,7 @@ const SiteHeader = () => {
             Tee Screens
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar >
       <Offset />
     </>
   );
